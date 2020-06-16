@@ -5,7 +5,11 @@
         <div class="card card-body">
             <form action="" method="POST">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form.management_form }}
+                {% for eachform in form %}
+                {{ eachform }}
+                <hr>
+                {% endfor %}
 
                 <input type="submit" value="Adicionar" />
             </form>
