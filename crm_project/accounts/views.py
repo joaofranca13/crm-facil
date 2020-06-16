@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from .models import Customer, Product, Tag, Order
-from .form import OrderForm
+from .forms import OrderForm
 from django.forms import inlineformset_factory
+from .filters import OrderFilter
 
 
 def index(request):
+    """Creates the home page with the dashboard"""
     orders = Order.objects.all()
     customers = Customer.objects.all()
     total_customers = customers.count()
@@ -24,6 +26,7 @@ def index(request):
 
 
 def products(request):
+    """Exihibts all the created products"""
     products = Product.objects.all()
     context = {
         'products': products
@@ -32,18 +35,24 @@ def products(request):
 
 
 def customers(request, pk):
+    """Display the customer detail page"""
     customer = Customer.objects.get(id=pk)
     orders = customer.order_set.all()
     total_orders = orders.count()
+    my_filter = OrderFilter(request.GET, queryset=orders)
+    orders = my_filter.qs
     context = {
         'customer': customer,
         'orders': orders,
         'total_orders': total_orders,
+        'my_filter': my_filter,
     }
+
     return render(request, 'accounts/customers.html', context)
 
 
 def create_order(request, pk):
+    """View for creating new orders"""
     orderformset = inlineformset_factory(
         Customer, Order, fields=('product', 'status'), extra=4)
     customer = Customer.objects.get(id=pk)
@@ -61,6 +70,7 @@ def create_order(request, pk):
 
 
 def update_order(request, pk):
+    """View for updating existing orders"""
     order = Order.objects.get(id=pk)
     form = OrderForm(instance=order)
     if request.method == 'POST':
@@ -75,6 +85,7 @@ def update_order(request, pk):
 
 
 def delete_order(request, pk):
+    """View for deleting existing orders"""
     order = Order.objects.get(id=pk)
     if request.method == "POST":
         order.delete()

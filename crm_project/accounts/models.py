@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Customer(models.Model):
+    """Model that register customer's data"""
     name = models.CharField(max_length=255, null=True)
     phone = models.CharField(max_length=255, null=True)
     email = models.CharField(max_length=255, null=True)
@@ -12,6 +13,7 @@ class Customer(models.Model):
 
 
 class Tag(models.Model):
+    """Model that register tags"""
     name = models.CharField(max_length=255, null=True)
 
     def __str__(self):
@@ -19,6 +21,7 @@ class Tag(models.Model):
 
 
 class Product(models.Model):
+    """Model that register product's data"""
     CATEGORY = (
         ('Indoor', 'Indoor'),
         ('Out Door', 'Out Door'),
@@ -35,6 +38,7 @@ class Product(models.Model):
 
 
 class Order(models.Model):
+    """Model that register order's data"""
     STATUS = (
         ('Pending', 'Pending'),
         ('Out for delivery', 'Out for delivery'),
@@ -44,7 +48,8 @@ class Order(models.Model):
         Customer, null=True, on_delete=models.SET_NULL, verbose_name='Cliente')
     product = models.ForeignKey(
         Product, null=True, on_delete=models.SET_NULL, verbose_name='Produto')
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(
+        auto_now_add=True, verbose_name='Data de Criação')
     status = models.CharField(
         max_length=255, null=True, choices=STATUS, verbose_name='Status')
 
