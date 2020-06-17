@@ -3,8 +3,10 @@ from .models import Customer, Product, Tag, Order
 from .forms import OrderForm
 from django.forms import inlineformset_factory
 from .filters import OrderFilter
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='users:loginpage')
 def index(request):
     """Creates the home page with the dashboard"""
     orders = Order.objects.all()
@@ -25,6 +27,7 @@ def index(request):
     return render(request, 'accounts/dashboard.html', context)
 
 
+@login_required(login_url='login')
 def products(request):
     """Exihibts all the created products"""
     products = Product.objects.all()
@@ -34,6 +37,7 @@ def products(request):
     return render(request, 'accounts/products.html', context)
 
 
+@login_required(login_url='users:loginpage')
 def customers(request, pk):
     """Display the customer detail page"""
     customer = Customer.objects.get(id=pk)
@@ -51,6 +55,7 @@ def customers(request, pk):
     return render(request, 'accounts/customers.html', context)
 
 
+@login_required(login_url='users:loginpage')
 def create_order(request, pk):
     """View for creating new orders"""
     orderformset = inlineformset_factory(
@@ -69,6 +74,7 @@ def create_order(request, pk):
     return render(request, 'accounts/form_order.html', context)
 
 
+@login_required(login_url='users:loginpage')
 def update_order(request, pk):
     """View for updating existing orders"""
     order = Order.objects.get(id=pk)
@@ -84,6 +90,7 @@ def update_order(request, pk):
     return render(request, 'accounts/form_order.html', context)
 
 
+@login_required(login_url='users:loginpage')
 def delete_order(request, pk):
     """View for deleting existing orders"""
     order = Order.objects.get(id=pk)

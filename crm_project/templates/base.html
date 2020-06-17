@@ -8,23 +8,38 @@
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
     <link rel="stylesheet" type="text/css" href="{% static '/css/base.css' %}" />
     <title></title>
+    <style>
+        #hello-msg {
+            font-size: 18px;
+            color: #fff;
+            margin-right: 20px;
+        }
+
+        #logout {
+            font-size: 18px;
+            color: #fff;
+            margin-right: 20px;
+        }
+    </style>
 </head>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a href="{% url 'accounts:index' %}"><img src="{% static 'img/logo.png' %}" /></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="{% url 'accounts:index' %}">Dashboard<span
-                    class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="{% url 'accounts:products' %}">Produtos</a>
-        </div>
-    </div>
-</nav>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a href="{% url 'accounts:index' %}"><img src="{% static 'img/logo.png' %}" /></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="">Olá, {{ request.user}}!</a>
+                <a class="nav-item nav-link active" href="{% url 'accounts:index' %}">Dashboard</a>
+                <a class="nav-item nav-link active" href="{% url 'accounts:products' %}">Produtos</a>
+                <a class="nav-item nav-link " href="{% url 'users:logout' %}">Sair</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container-fluid">
         {% block content %} {% endblock %}
     </div>
