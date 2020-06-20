@@ -131,6 +131,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
 
 MEDIA_URL = '/images/'
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # SMTP Configuration
 
