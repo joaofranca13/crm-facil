@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
-from .forms import CreateUserForm
+from .forms import CreateUserForm, CustomerProfileForm
 from django.contrib import messages
-from .decorators import allowed_users, unauthenticated_user
-from accounts.models import Customer
+from .decorators import users_only, unauthenticated_user
 
 
 @unauthenticated_user
@@ -25,24 +23,23 @@ def loginpage(request):
 
 def logoutuser(request):
     logout(request)
-    return redirect('users:loginpage')
+    return redirect('loginpage')
 
 
 @unauthenticated_user
-def register(request):
+def register(request, **kwargs):
     """Register a new user"""
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            group = Group.objects.get(name='customer')
-            user.groups.add(group)
-            Customer.objects.create(user=user)
+            form.save()
+            username = form.cleaned_data.get('username')
 
-            messages.success(request, 'Conta criada com sucesso!')
+            messages.success(
+                request, 'Conta criada com sucesso, ' + username + "!")
 
-            return redirect('users:loginpage')
+            return redirect('loginpage')
 
     context = {
         'form': form,
@@ -50,8 +47,8 @@ def register(request):
     return render(request, 'users/register.html', context)
 
 
-@login_required(login_url='users:loginpage')
-@allowed_users(allowed_roles=['customer'])
+@login_required(login_url='loginpage')
+@users_only
 def userpage(request):
     orders = request.user.customer.order_set.all()
     total_orders = orders.count()
@@ -64,3 +61,18 @@ def userpage(request):
         'pending_orders': pending_orders,
     }
     return render(request, 'users/user.html', context)
+
+
+@login_required(login_url='loginpage')
+@users_only
+def profile(request):
+    customer = request.user.customer
+    form = CustomerProfileForm(instance=customer)
+    if request.method == 'POST':
+        form = CustomerProfileForm(
+            request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form}
+    return render(request, 'users/profile.html', context)

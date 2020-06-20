@@ -5,12 +5,19 @@ from django.contrib.auth.models import User
 class Customer(models.Model):
     """Model that register customer's data"""
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, null=True)
-    phone = models.CharField(max_length=255, null=True)
-    email = models.CharField(max_length=255, null=True)
+    name = models.CharField(max_length=255, null=True, verbose_name='Nome')
+    phone = models.CharField(max_length=255, null=True, verbose_name='Fone:')
+    email = models.CharField(max_length=255, null=True, verbose_name='Email')
     date_created = models.DateTimeField(auto_now_add=True)
+    profile_pic = models.ImageField(
+        default='profile_placeholder.jpeg',
+        null=True, blank=True,
+        verbose_name='Foto de Perfil'
+    )
 
     def __str__(self):
+        if self.name is None:
+            return 'ERROR-CUSTOMER NAME IS NULL'
         return self.name
 
 
@@ -36,6 +43,8 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag)
 
     def __str__(self):
+        if self.name is None:
+            return 'ERROR-PRODUCT NAME IS NULL'
         return self.name
 
 
@@ -56,4 +65,6 @@ class Order(models.Model):
         max_length=255, null=True, choices=STATUS, verbose_name='Status')
 
     def __str__(self):
+        if self.product.name is None:
+            return 'ERROR-ORDER-PRODUCT NAME IS NULL'
         return self.product.name

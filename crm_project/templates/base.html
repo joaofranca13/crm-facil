@@ -32,12 +32,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="">Olá, {{ request.user}}!</a>
+                <a class="nav-item nav-link active" href="">Olá, {{ request.user.customer.name }}!</a>
                 {% if request.user.is_staff %}
                 <a class="nav-item nav-link active" href="{% url 'accounts:index' %}">Dashboard</a>
                 <a class="nav-item nav-link active" href="{% url 'accounts:products' %}">Produtos</a>
+                {% else %}
+                <a class="nav-item nav-link " href="{% url 'profile' %}">Perfil</a>
                 {% endif %}
-                <a class="nav-item nav-link " href="{% url 'users:logout' %}">Sair</a>
+                <a class="nav-item nav-link " href="{% url 'logout' %}">Sair</a>
             </div>
         </div>
     </nav>

@@ -126,7 +126,12 @@
                 <div class="mt-4">
                     <div class="d-flex justify-content-center links">
                         Ainda não é cadastrado?
-                        <a href="{% url 'users:register' %}" class="ml-2">Criar conta</a>
+                        <a href="{% url 'register' %}" class="ml-2">Criar conta</a>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-center links">
+                        <a href="{% url 'reset_password' %}" class="ml-2">Esqueci minha senha</a>
                     </div>
                 </div>
             </div>

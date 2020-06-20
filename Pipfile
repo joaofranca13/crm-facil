@@ -8,6 +8,14 @@ verify_ssl = true
 [packages]
 django = "*"
 django-filter = "*"
+python-decouple = "*"
+install = "*"
+dj-database-url = "*"
+psycopg2-binary = "*"
+django-storages = "*"
+boto3 = "*"
+whitenoise = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
