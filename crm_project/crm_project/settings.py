@@ -131,7 +131,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/img')
 
 MEDIA_URL = '/images/'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 
